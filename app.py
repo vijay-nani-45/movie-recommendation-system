@@ -112,6 +112,15 @@ if 'title' in movies.columns and 'title' in credits.columns:
 else:
     print("Merge operation skipped due to missing 'title' column.")
 #movies = movies.merge(credits, on='title')
+required_columns = ['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']
+missing_columns = [col for col in required_columns if col not in movies.columns]
+
+if missing_columns:
+    print(f"Missing columns: {missing_columns}")
+else:
+    movies = movies[required_columns]
+
+#j
 
 movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
 movies.dropna(inplace=True)
