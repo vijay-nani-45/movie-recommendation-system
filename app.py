@@ -120,6 +120,26 @@ if missing_columns:
 else:
     movies = movies[required_columns]
 
+
+
+
+required_columns = ["title", "genre", "rating"]
+
+# Load the DataFrame (replace this with your actual data loading logic)
+try:
+    movies = pd.read_csv("movies.csv")  # Adjust the file path
+    missing_columns = [col for col in required_columns if col not in movies.columns]
+
+    if missing_columns:
+        st.error(f"Missing columns in input data: {missing_columns}")
+    else:
+        st.success("All required columns are present.")
+        # Continue with the application logic
+except FileNotFoundError:
+    st.error("The movies.csv file was not found. Please check the file path.")
+except Exception as e:
+    st.error(f"An unexpected error occurred: {str(e)}")
+
 #j
 
 movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
