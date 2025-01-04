@@ -90,8 +90,8 @@ def stem(text):
     return " ".join([ps.stem(word) for word in text.split()])
 
 # Load and preprocess data
-movies = pd.read_csv(r"tmdb_5000_movies.csv", encoding='ISO-8859-1',error_bad_lines=False)
-credits = pd.read_csv(r"tmdb_5000_credits.csv", encoding='ISO-8859-1',error_bad_lines=False)
+movies = pd.read_csv(r"tmdb_5000_movies.csv", encoding='ISO-8859-1',on_bad_lines=False)
+credits = pd.read_csv(r"tmdb_5000_credits.csv", encoding='ISO-8859-1',on_bad_lines=False)
 movies = movies.merge(credits, on='title')
 
 movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
