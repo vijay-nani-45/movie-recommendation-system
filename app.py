@@ -93,20 +93,24 @@ def stem(text):
 movies = pd.read_csv(r"tmdb_5000_movies.csv", encoding='ISO-8859-1', sep=',',   engine='python', on_bad_lines='skip')
 credits = pd.read_csv(r"tmdb_5000_credits.csv", encoding='ISO-8859-1', sep=',',  engine='python',  on_bad_lines='skip')
 
-print("Movies columns:", movies.columns)
-print("Credits columns:", credits.columns)
-
-# Rename or clean column names if necessary
 movies.columns = movies.columns.str.strip()
 credits.columns = credits.columns.str.strip()
 
-# Ensure 'title' exists in both
-if 'title' not in movies.columns or 'title' not in credits.columns:
-    raise KeyError("'title' column is missing in one of the DataFrames.")
+# Verify 'title' column exists
+if 'title' not in movies.columns:
+    print("Error: 'title' column is missing in movies DataFrame.")
+    print("Available columns in movies:", list(movies.columns))
+if 'title' not in credits.columns:
+    print("Error: 'title' column is missing in credits DataFrame.")
+    print("Available columns in credits:", list(credits.columns))
 
-# Merge the DataFrames
-movies = movies.merge(credits, on='title', how='inner')
-print("Merged DataFrame:", movies.head())
+# Proceed only if 'title' exists in both
+if 'title' in movies.columns and 'title' in credits.columns:
+    # Merge DataFrames
+    merged_data = movies.merge(credits, on='title', how='inner')
+    print("Merged DataFrame:", merged_data.head())
+else:
+    print("Merge operation skipped due to missing 'title' column.")
 #movies = movies.merge(credits, on='title')
 
 movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
