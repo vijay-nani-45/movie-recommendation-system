@@ -92,7 +92,22 @@ def stem(text):
 # Load and preprocess data
 movies = pd.read_csv(r"tmdb_5000_movies.csv", encoding='ISO-8859-1', sep=',',   engine='python', on_bad_lines='skip')
 credits = pd.read_csv(r"tmdb_5000_credits.csv", encoding='ISO-8859-1', sep=',',  engine='python',  on_bad_lines='skip')
-movies = movies.merge(credits, on='title')
+
+print("Movies columns:", movies.columns)
+print("Credits columns:", credits.columns)
+
+# Rename or clean column names if necessary
+movies.columns = movies.columns.str.strip()
+credits.columns = credits.columns.str.strip()
+
+# Ensure 'title' exists in both
+if 'title' not in movies.columns or 'title' not in credits.columns:
+    raise KeyError("'title' column is missing in one of the DataFrames.")
+
+# Merge the DataFrames
+movies = movies.merge(credits, on='title', how='inner')
+print("Merged DataFrame:", movies.head())
+#movies = movies.merge(credits, on='title')
 
 movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
 movies.dropna(inplace=True)
